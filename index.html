@@ -160,19 +160,19 @@
     ];
 
     function App() {
-      // Load initial students data from localStorage or fallback to defaults
+      // Load initial students data from a brand-new localStorage key to bypass cached browser memory
       const [students, setStudents] = useState(() => {
-        const saved = localStorage.getItem('malika_rapor_students');
+        const saved = localStorage.getItem('malika_rapor_students_v3');
         return saved ? JSON.parse(saved) : initialStudents;
       });
 
-      // Global Settings State for Semester, Date, and Staff signatures (Shared via LocalStorage)
-      const [globalSemester, setGlobalSemester] = useState(() => localStorage.getItem('malika_rapor_semester') || "Ganjil 2025/2026");
-      const [globalTanggal, setGlobalTanggal] = useState(() => localStorage.getItem('malika_rapor_tanggal') || "19 Desember 2025");
-      const [globalWaliKelas, setGlobalWaliKelas] = useState(() => localStorage.getItem('malika_global_wali_kelas') || "Ustadz Maulana Azka, Lc.");
-      const [globalWaliKamar, setGlobalWaliKamar] = useState(() => localStorage.getItem('malika_global_wali_kamar') || "Ustadz Ali Murtadlo");
-      const [globalJabatanKS, setGlobalJabatanKS] = useState(() => localStorage.getItem('malika_global_jabatan_ks') || "Kepala SMP");
-      const [globalNamaKS, setGlobalNamaKS] = useState(() => localStorage.getItem('malika_global_nama_ks') || "Ustadz Abd. Halim, S.S.I");
+      // Global Settings State for Semester, Date, and Staff signatures (Shared via LocalStorage v3)
+      const [globalSemester, setGlobalSemester] = useState(() => localStorage.getItem('malika_rapor_semester_v3') || "Ganjil 2025/2026");
+      const [globalTanggal, setGlobalTanggal] = useState(() => localStorage.getItem('malika_rapor_tanggal_v3') || "19 Desember 2025");
+      const [globalWaliKelas, setGlobalWaliKelas] = useState(() => localStorage.getItem('malika_global_wali_kelas_v3') || "Ustadz Maulana Azka, Lc.");
+      const [globalWaliKamar, setGlobalWaliKamar] = useState(() => localStorage.getItem('malika_global_wali_kamar_v3') || "Ustadz Ali Murtadlo");
+      const [globalJabatanKS, setGlobalJabatanKS] = useState(() => localStorage.getItem('malika_global_jabatan_ks_v3') || "Kepala SMP");
+      const [globalNamaKS, setGlobalNamaKS] = useState(() => localStorage.getItem('malika_global_nama_ks_v3') || "Ustadz Abd. Halim, S.S.I");
 
       const [activeTab, setActiveTab] = useState('report'); // report, database
       const [selectedStudentId, setSelectedStudentId] = useState(() => students[0]?.id || "1");
@@ -184,16 +184,16 @@
 
       // Sync data to localStorage automatically when state changes
       useEffect(() => {
-        localStorage.setItem('malika_rapor_students', JSON.stringify(students));
+        localStorage.setItem('malika_rapor_students_v3', JSON.stringify(students));
       }, [students]);
 
       useEffect(() => {
-        localStorage.setItem('malika_rapor_semester', globalSemester);
-        localStorage.setItem('malika_rapor_tanggal', globalTanggal);
-        localStorage.setItem('malika_global_wali_kelas', globalWaliKelas);
-        localStorage.setItem('malika_global_wali_kamar', globalWaliKamar);
-        localStorage.setItem('malika_global_jabatan_ks', globalJabatanKS);
-        localStorage.setItem('malika_global_nama_ks', globalNamaKS);
+        localStorage.setItem('malika_rapor_semester_v3', globalSemester);
+        localStorage.setItem('malika_rapor_tanggal_v3', globalTanggal);
+        localStorage.setItem('malika_global_wali_kelas_v3', globalWaliKelas);
+        localStorage.setItem('malika_global_wali_kamar_v3', globalWaliKamar);
+        localStorage.setItem('malika_global_jabatan_ks_v3', globalJabatanKS);
+        localStorage.setItem('malika_global_nama_ks_v3', globalNamaKS);
       }, [globalSemester, globalTanggal, globalWaliKelas, globalWaliKamar, globalJabatanKS, globalNamaKS]);
 
       const selectedStudent = students.find(s => String(s.id) === String(selectedStudentId)) || students[0] || null;
@@ -366,10 +366,10 @@
 
       const progress = selectedStudent ? calculateChange(selectedStudent) : { percent: "0", positive: true };
 
-      // Helper to completely clear local storage and force-reload initial default students with Aldi Taher
+      // Reset local storage database back to initial defaults with Aldi Taher
       const handleResetDatabase = () => {
         triggerConfirm("Apakah Anda ingin mereset seluruh database santri kembali ke pengaturan awal Malika (Termasuk data contoh Aldi Taher)? Semua perubahan lokal Anda akan digantikan.", () => {
-          localStorage.removeItem('malika_rapor_students');
+          localStorage.removeItem('malika_rapor_students_v3');
           setStudents(initialStudents);
           setSelectedStudentId("1");
           triggerAlert("Database telah berhasil direset ke pengaturan awal.", "Reset Berhasil");
